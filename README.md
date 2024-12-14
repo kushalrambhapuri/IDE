@@ -1,22 +1,99 @@
-# IDE
-Now no need to use VScode or Pycharm now with just 70 lines of python code you can make your own IDE!!
-In your own IDE you can run your code, save your code, open another code and exit it!!
-I have done it by using Pycharm which is an python code editor.
-In the firs of my code I have imported tkinter which is default in Pycharm.
-Then I have told the tkinter, tkinter.filedialog import asksaveasfilename, askopenfilename.
-Then I have imported subprocess.
-Then I have created a variable called compiler and entered the value as Tk().
-Then I hav told the compiler that compiler.title('**THE NAME YOU WANT TO DISPLAY ON LEFT TOP CORNER**').
-Then I have created another variable called file_path and entered the value as ''.
-Then I have created a function called def set_file_path(path): and inside the function I have written global file_path file_path = path.
-Then I have created another function called def open_file(): and inside it I have created a variable called path and entered the value as askopenfilename(filetypes=[('Python Files', '*.py')]), Then I have written with open(path, 'r') as file: and inside it I have created another variable called code and entered the value as file.read() then I have written editor.delete('1.0', END) editor.insert('1.0', code) set_file_path(path).
-Then I have created another function callled def save_as(): and inside it I have written if file_path == '': path = asksaveasfilename(filetypes=[('Python Files', '*.py')]) else: path = file_path with open(path, 'w') as file: code = editor.get('1.0', END) file.write(code) set_file_path(path).
-Then I have created another function called def run(): and inside this function I have written if file_path == '': save_prompt = Toplevel() text = Label(save_prompt, text='Please save your code') text.pack() return command = f'python{file_path}' process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True) output, error = process.communicate() code_output.insert('1.0', output) code_output.insert('1.0', error).
-Then I have created another variable called menu_bar and entered the value as Menu(compiler).
-Then for the file_menu I have written some code file_menu = Menu(menu_bar, tearoff=0) file_menu.add_command(label='Open', command=open_file) file_menu.add_command(label='Save', command=save_as) file_menu.add_command(label='Save As', command=save_as) file_menu.add_command(label='Exit', command=exit) menu_bar.add_cascade(label='File', menu=file_menu).
-And same for th run_bar I have written run_bar = Menu(menu_bar, tearoff=0) run_bar.add_command(label='Run', command=run) menu_bar.add_cascade(label='Run', menu=run_bar).
-Then I have written compiler.config(menu=menu_bar).
-And for the editor I have written editor = Text() and then editor.pack().
-And for the code output I have written code_output = Text(height=10) and then code_output.pack()
-And then to run program I have written compiler.mainloop().
-And there you go your own new IDE is ready now you can ditch Visual Code and Pycharm!!
+# Create your own IDE
+Forget about using Visual Studio Code or PyCharm. With just 70 lines of Python code, you can create your own lightweight Python IDE! This custom IDE allows you to write, save, open, and run Python code easily.
+Steps to Build
+Import Necessary Modules
+
+Use tkinter for creating the GUI.
+Import tkinter.filedialog for file operations.
+Import subprocess to run Python code directly from the IDE.
+
+from tkinter import *
+from tkinter.filedialog import asksaveasfilename, askopenfilename
+import subprocess
+Initialize the Compiler Window
+
+compiler = Tk()
+compiler.title('Your IDE Name')  # Set your IDE's title
+file_path = ''  # To store the path of the current file
+Define File and Run Functions
+
+Set File Path: Store the file path for the current file.
+Open File: Open and read Python files.
+Save File: Save the code to the current file or a new one.
+Run Code: Run the Python script and display the output or errors.
+
+def set_file_path(path):
+    global file_path
+    file_path = path
+
+def open_file():
+    path = askopenfilename(filetypes=[('Python Files', '*.py')])
+    with open(path, 'r') as file:
+        code = file.read()
+        editor.delete('1.0', END)
+        editor.insert('1.0', code)
+        set_file_path(path)
+
+def save_as():
+    global file_path
+    if file_path == '':
+        path = asksaveasfilename(filetypes=[('Python Files', '*.py')])
+    else:
+        path = file_path
+    with open(path, 'w') as file:
+        code = editor.get('1.0', END)
+        file.write(code)
+        set_file_path(path)
+
+def run():
+    if file_path == '':
+        save_prompt = Toplevel()
+        text = Label(save_prompt, text='Please save your code')
+        text.pack()
+        return
+    command = f'python {file_path}'
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    output, error = process.communicate()
+    code_output.delete('1.0', END)
+    code_output.insert('1.0', output)
+    code_output.insert('1.0', error)
+Create Menus
+
+Add File and Run menus to the menu bar.
+
+menu_bar = Menu(compiler)
+
+file_menu = Menu(menu_bar, tearoff=0)
+file_menu.add_command(label='Open', command=open_file)
+file_menu.add_command(label='Save', command=save_as)
+file_menu.add_command(label='Save As', command=save_as)
+file_menu.add_command(label='Exit', command=exit)
+menu_bar.add_cascade(label='File', menu=file_menu)
+
+run_menu = Menu(menu_bar, tearoff=0)
+run_menu.add_command(label='Run', command=run)
+menu_bar.add_cascade(label='Run', menu=run_menu)
+
+compiler.config(menu=menu_bar)
+Create the Text Editor and Output Area
+
+Use Text widgets for the code editor and the output display.
+
+editor = Text()
+editor.pack()
+
+code_output = Text(height=10)
+code_output.pack()
+Run the Compiler
+Finally, launch the IDE:
+
+compiler.mainloop()
+Now you have your very own Python IDE! It includes:
+
+Open, Save, and Run functionality
+A text editor to write your code
+An output area to display results and errors
+Features:
+Lightweight: Just 70 lines of code!
+Customizable: Add more features like syntax highlighting or debugging support.
+Enjoy coding with your new IDE! 🎉
